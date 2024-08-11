@@ -10,6 +10,6 @@ rsync -azvP --del \
 
 ssh root@$HOST 'cd /root/hosting && docker compose kill && docker compose rm -f'
 ssh root@$HOST 'cd /root/hosting && docker compose build'
-ssh root@$HOST 'cd /root/hosting && docker compose up server --remove-orphans -d'
+ssh root@$HOST 'cd /root/hosting && docker compose up --remove-orphans -d'
 
 echo Done

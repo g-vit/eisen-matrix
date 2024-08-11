@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
@@ -17,6 +17,8 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
   const [theme, setTheme] = useState(getTheme());
+
+  const formRef = useRef(null);
 
   const fetchTasks = async () => {
     const response = await fetch('/api/tasks');
@@ -61,6 +63,7 @@ const App = () => {
 
   const handleEdit = (task) => {
     setEditingTask(task);
+    formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const handleNewTask = () => {
@@ -82,7 +85,7 @@ const App = () => {
             <h2>{baseTitle} 🎯</h2>
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
           </div>
-          <div className="mb-4">
+          <div className="mb-4" ref={formRef}>
             {editingTask ? (
               <TaskForm
                 onSubmit={handleSubmit}

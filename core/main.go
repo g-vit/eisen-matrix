@@ -48,7 +48,7 @@ func main() {
 		saveTasks()
 	}
 
-	e.Static("/", "../ui/build")
+	e.Static("/", "static")
 
 	e.GET("/api/tasks", getTasks)
 	e.POST("/api/tasks", createTask)

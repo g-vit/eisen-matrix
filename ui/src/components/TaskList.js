@@ -25,7 +25,7 @@ const TaskList = ({ tasks, onComplete, onEdit, onDelete }) => {
                     if (a.priority !== b.priority) {
                       return a.priority - b.priority;
                     } else {
-                      return new Date(b.created_at) - new Date(a.created_at);
+                      return new Date(a.created_at) - new Date(b.created_at);
                     }
                   })
                   .map((task) => (

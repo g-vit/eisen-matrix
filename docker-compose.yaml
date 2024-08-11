@@ -8,17 +8,14 @@ services:
       - 'traefik.http.routers.web.rule=Host(`${HOST}`)'
       - 'traefik.http.routers.web.entrypoints=websecure'
       - 'traefik.http.routers.web.tls.certresolver=letsencrypt'
-      - 'traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://${HOST}'
-      - 'traefik.http.middlewares.cors.headers.allowedhosts=https://${HOST}'
-      - 'traefik.http.middlewares.cors.headers.accesscontrolallowheaders=*'
-      - 'traefik.http.middlewares.cors.headers.accesscontrolexposeheaders=*'
-      - 'traefik.http.middlewares.cors.Headers.AccessControlAllowMethods=GET,POST,PUT,DELETE,OPTIONS'
+      - 'traefik.http.routers.web.middlewares=auth'
+      - 'traefik.http.middlewares.auth.basicauth.usersfile=/traefik/htpasswd'
     environment:
-      DATAFILE_PATH: '/data.json'
+      DATAFILE_PATH: '/eisen/data.json'
     volumes:
-      - /opt/eisen/data.json:/data.json
+      - /opt/eisen:/eisen
 
-  deploy:
+  proxy:
     image: traefik:v3.1
     command:
       - '--log.level=DEBUG'
@@ -35,3 +32,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/traefik/letsencrypt:/letsencrypt
+      - /opt/traefik/htpasswd:/traefik/htpasswd:ro

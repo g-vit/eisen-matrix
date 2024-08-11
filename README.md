@@ -40,6 +40,8 @@ make run-script name=init-server
 ### Deploying the application
 
 ```bash
+echo LOGIN=yourlogin >> .env
+echo PASS='yourpassword' >> .env
 make run-script name=deploy
 ```
 

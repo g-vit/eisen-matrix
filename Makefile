@@ -2,6 +2,8 @@ SHELL := /bin/bash
 
 -include .env
 export HOST
+export LOGIN
+export PASS
 
 .PHONY: binaries
 binaries: bin/reflex bin/overmind

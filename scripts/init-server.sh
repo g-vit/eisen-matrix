@@ -3,11 +3,10 @@ set -ex
 
 # Prepare
 ssh root@$HOST apt update
-ssh root@$HOST apt install -y net-tools nmap
+ssh root@$HOST apt install -y net-tools nmap apache2-utils
 ssh root@$HOST mkdir -p /root/hosting
 ssh root@$HOST mkdir -p /opt/traefik/letsencrypt
 ssh root@$HOST mkdir -p /opt/eisen
-ssh root@$HOST touch /opt/eisen/data.json
 
 ## Install Docker
 ssh root@$HOST DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common

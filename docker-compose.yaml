@@ -19,7 +19,7 @@ services:
       - /opt/eisen/data.json:/data.json
 
   deploy:
-    image: traefik:v3.1.2
+    image: traefik:v1.7
     command:
       - --logLevel=DEBUG
       - '--defaultentrypoints=https,http'

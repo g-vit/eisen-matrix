@@ -5,10 +5,8 @@ set -ex
 ssh root@$HOST apt update
 ssh root@$HOST apt install -y net-tools nmap
 ssh root@$HOST mkdir -p /root/hosting
-ssh root@$HOST mkdir -p /opt/traefik
+ssh root@$HOST mkdir -p /opt/traefik/letsencrypt
 ssh root@$HOST mkdir -p /opt/eisen
-ssh root@$HOST touch /opt/traefik/acme.json
-ssh root@$HOST chmod 0600 /opt/traefik/acme.json
 ssh root@$HOST touch /opt/eisen/data.json
 
 ## Install Docker

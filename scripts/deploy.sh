@@ -16,11 +16,11 @@ rsync -azvP --del \
   --exclude 'ui/node_modules' \
   --exclude 'bin' \
   --exclude 'scripts' \
-  . root@$HOST:/root/hosting/
+  . root@$DOMAIN:/root/hosting/
 
-ssh root@$HOST "htpasswd -nbB $LOGIN $PASS > /opt/traefik/htpasswd"
-ssh root@$HOST 'cd /root/hosting && docker compose kill && docker compose rm -f'
-ssh root@$HOST 'cd /root/hosting && docker compose build'
-ssh root@$HOST 'cd /root/hosting && docker compose up --remove-orphans -d'
+ssh root@$DOMAIN "htpasswd -nbB $LOGIN $PASS > /opt/traefik/htpasswd"
+ssh root@$DOMAIN 'cd /root/hosting && docker compose kill && docker compose rm -f'
+ssh root@$DOMAIN 'cd /root/hosting && docker compose build'
+ssh root@$DOMAIN 'cd /root/hosting && docker compose up --remove-orphans -d'
 
 echo Done

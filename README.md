@@ -33,7 +33,7 @@ make run
 
 ```bash
 touch .env
-echo HOST=yourdomain.com > .env
+echo DOMAIN=yourdomain.com > .env
 make run-script name=init-server
 ```
 

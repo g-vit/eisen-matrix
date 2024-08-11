@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 -include .env
-export HOST
+export DOMAIN
 export LOGIN
 export PASS
 
@@ -34,4 +34,4 @@ run-script: check-vars
 	fi
 
 check-vars:
-	@if [ -z "$(HOST)" ]; then echo "You need to set HOST in the .env file or export the variable separately."; exit 1; fi
+	@if [ -z "$(DOMAIN)" ]; then echo "You need to set DOMAIN in the .env file or export the variable separately."; exit 1; fi

@@ -22,9 +22,9 @@ export const taskGroups = {
 };
 
 export const taskPriorities = {
-  1: { text: 'high', color: 'danger' },
-  2: { text: 'middle', color: 'warning' },
-  3: { text: 'low', color: 'success' },
+  1: { text: 'High', icon: '🚨' },
+  2: { text: 'Medium', icon: '⚠️' },
+  3: { text: 'Low', icon: '☘️' },
 };
 
 export const defaultValues = {

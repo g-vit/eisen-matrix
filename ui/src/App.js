@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import { defaultValues } from './components/utils';
 import TaskArchive from './components/TaskArchive';
+
+export const ThemeContext = createContext(null);
 
 const App = () => {
   const baseTitle = 'EisenMatrix';
@@ -14,6 +16,7 @@ const App = () => {
 
   const [tasks, setTasks] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
+  const [theme, setTheme] = useState(getTheme());
 
   const fetchTasks = async () => {
     const response = await fetch('/api/tasks');
@@ -73,38 +76,55 @@ const App = () => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <div className="contrainer px-4">
-        <div className="d-flex justify-content-between align-items-center my-2">
-          <h2>{baseTitle} 🎯</h2>
-          <ThemeSwitcher />
+      <ThemeContext.Provider value={theme}>
+        <div className="contrainer px-4">
+          <div className="d-flex justify-content-between align-items-center my-2">
+            <h2>{baseTitle} 🎯</h2>
+            <ThemeSwitcher theme={theme} setTheme={setTheme} />
+          </div>
+          <div className="mb-4">
+            {editingTask ? (
+              <TaskForm
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                initialValues={editingTask}
+              />
+            ) : (
+              <button onClick={handleNewTask} className="btn btn-success">
+                New Task
+              </button>
+            )}
+          </div>
+          <TaskList
+            tasks={tasks}
+            onComplete={handleComplete}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+          <TaskArchive
+            tasks={tasks}
+            onReturn={handleReturn}
+            onDelete={handleDelete}
+          />
         </div>
-        <div className="mb-4">
-          {editingTask ? (
-            <TaskForm
-              onSubmit={handleSubmit}
-              onCancel={handleCancel}
-              initialValues={editingTask}
-            />
-          ) : (
-            <button onClick={handleNewTask} className="btn btn-success">
-              New Task
-            </button>
-          )}
-        </div>
-        <TaskList
-          tasks={tasks}
-          onComplete={handleComplete}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-        <TaskArchive
-          tasks={tasks}
-          onReturn={handleReturn}
-          onDelete={handleDelete}
-        />
-      </div>
+      </ThemeContext.Provider>
     </div>
   );
+};
+
+const getDefaultTheme = () => {
+  if (
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  ) {
+    return 'dark';
+  }
+  return 'light';
+};
+
+const getTheme = () => {
+  const savedTheme = localStorage.getItem('theme');
+  return savedTheme ? savedTheme : getDefaultTheme();
 };
 
 export default App;

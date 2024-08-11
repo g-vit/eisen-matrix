@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Linkify from 'linkify-react';
 import { taskGroups, taskPriorities } from './utils';
+import { ThemeContext } from '../App';
 
 const TaskItem = ({
   task,
@@ -10,13 +11,13 @@ const TaskItem = ({
   onDelete,
   onEdit,
 }) => {
+  const theme = useContext(ThemeContext);
+
   return (
     <>
-      <div className='me-1'>
+      <div className="me-1">
         {showGroup && taskGroups[task.group].emoji + ' '}
-        <span className={'text-' + taskPriorities[task.priority].color}>
-          [{taskPriorities[task.priority].text}]
-        </span>{' '}
+        <PriorityItem priority={task.priority} theme={theme} />
         <Linkify>{task.description}</Linkify>
       </div>
       <div className="d-grid gap-1 d-flex justify-content-md-end">
@@ -37,10 +38,7 @@ const TaskItem = ({
           </button>
         )}
         {onEdit && (
-          <button
-            className="btn btn-sm border"
-            onClick={() => onEdit(task)}
-          >
+          <button className="btn btn-sm border" onClick={() => onEdit(task)}>
             ✏️
           </button>
         )}
@@ -54,6 +52,18 @@ const TaskItem = ({
         )}
       </div>
     </>
+  );
+};
+
+const PriorityItem = ({ priority, theme }) => {
+  return (
+    <span
+      className={`me-1 badge rounded-pill border ${
+        theme === 'light' ? ' text-dark' : ''
+      }`}
+    >
+      {taskPriorities[priority].icon} {taskPriorities[priority].text}
+    </span>
   );
 };
 

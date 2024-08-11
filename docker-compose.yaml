@@ -1,0 +1,42 @@
+version: '3'
+services:
+  server:
+    build: .
+    expose: [8080]
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${HOST}'
+      - 'traefik.frontend.tls=true'
+      - 'traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://${HOST}'
+      - 'traefik.http.middlewares.cors.headers.allowedhosts=https://${HOST}'
+      - 'traefik.http.middlewares.cors.headers.accesscontrolalloworigin=origin-list-or-null'
+      - 'traefik.http.middlewares.cors.headers.accesscontrolallowheaders=*'
+      - 'traefik.http.middlewares.cors.headers.accesscontrolexposeheaders=*'
+      - 'traefik.http.middlewares.cors.Headers.AccessControlAllowMethods=GET,POST,PUT,DELETE,OPTIONS'
+    environment:
+      DATAFILE_PATH: '/data.json'
+    volumes:
+      - /opt/eisen/data.json:/data.json
+
+  deploy:
+    image: traefik:v3.1.2
+    command:
+      - --logLevel=DEBUG
+      - '--defaultentrypoints=https,http'
+      - '--entryPoints=Name:http Address::80 Redirect.EntryPoint:https'
+      - '--entryPoints=Name:https Address::443 TLS'
+      - '--retry'
+      - --docker.endpoint=unix:///var/run/docker.sock
+      - --docker.watch=true
+      - --docker.exposedbydefault=false
+      - --acme.email=demo@${HOST}
+      - --acme.storage=/acme.json
+      - --acme.entryPoint=https
+      - --acme.onHostRule=true
+      - --acme.httpchallenge.entrypoint=http
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/acme.json:/acme.json

@@ -1,5 +1,7 @@
 # Task Management Application with Eisenhower Matrix
 
+![Application Screenshot](docs/screenshots/demo.png)
+
 ## Description
 
 This project is a web application designed for task management using the Eisenhower Matrix. The application allows users to categorize tasks into four groups, manage them, and mark them as completed or pending. It consists of a React frontend and a Go backend.
